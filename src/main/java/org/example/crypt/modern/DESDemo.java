@@ -1,6 +1,6 @@
 package org.example.crypt.modern;
 
-import org.example.crypt.modern.util.DESAES;
+import org.example.crypt.utils.DESAES;
 
 /**
  * DESDemo
