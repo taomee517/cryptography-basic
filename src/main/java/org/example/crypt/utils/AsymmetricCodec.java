@@ -1,7 +1,5 @@
 package org.example.crypt.utils;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
-
 import javax.crypto.Cipher;
 import java.security.Key;
 
@@ -19,7 +17,7 @@ public class AsymmetricCodec {
         Key privateKey = KeyPairUtil.getPrivatelicKey(algorithm, privateKeyPath);
         cipher.init(Cipher.ENCRYPT_MODE, privateKey);
         byte[] bytes = cipher.doFinal(message.getBytes());
-        String base64Encode = Base64.encode(bytes);
+        String base64Encode = Base64Util.encode(bytes);
         return base64Encode;
     }
 
@@ -27,7 +25,7 @@ public class AsymmetricCodec {
         Cipher cipher = Cipher.getInstance(algorithm);
         Key publicKey = KeyPairUtil.getPublicKey(algorithm, publicKeyPath);
         cipher.init(Cipher.DECRYPT_MODE, publicKey);
-        byte[] encodeBytes = Base64.decode(encode);
+        byte[] encodeBytes = Base64Util.decode(encode);
         byte[] bytes = cipher.doFinal(encodeBytes);
         return new String(bytes);
     }
@@ -37,7 +35,7 @@ public class AsymmetricCodec {
         Key publicKey = KeyPairUtil.getPublicKey(algorithm, publicKeyPath);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         byte[] bytes = cipher.doFinal(message.getBytes());
-        String base64Encode = Base64.encode(bytes);
+        String base64Encode = Base64Util.encode(bytes);
         return base64Encode;
     }
 
@@ -45,7 +43,7 @@ public class AsymmetricCodec {
         Cipher cipher = Cipher.getInstance(algorithm);
         Key privatelicKey = KeyPairUtil.getPrivatelicKey(algorithm, privateKeyPath);
         cipher.init(Cipher.DECRYPT_MODE, privatelicKey);
-        byte[] encodeBytes = Base64.decode(encode);
+        byte[] encodeBytes = Base64Util.decode(encode);
         byte[] bytes = cipher.doFinal(encodeBytes);
         return new String(bytes);
     }

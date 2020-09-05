@@ -1,7 +1,5 @@
 package org.example.crypt.utils;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -30,7 +28,7 @@ public class DESAES {
         // 打印加密结果，通常会有乱码，因为负值没有对应的ascii码
 //            String enMsg = new String(enBytes);
 
-        String enMsg = Base64.encode(enBytes);
+        String enMsg = Base64Util.encode(enBytes);
         return enMsg;
     }
 
@@ -47,7 +45,7 @@ public class DESAES {
         // 参数二：加密规则
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
         // 调用解密方法
-        byte[] enBytes = Base64.decode(in);
+        byte[] enBytes = Base64Util.decode(in);
         byte[] deBytes = cipher.doFinal(enBytes);
         String deMsg = new String(deBytes);
         return deMsg;

@@ -1,11 +1,10 @@
 package org.example.crypt.utils;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
+//import com.sun.org.apache.xml.internal.security.utils.Base64;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
-import org.example.crypt.algorithm.AsymmetricAlgorithm;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.*;
 import java.security.spec.KeySpec;
@@ -30,8 +29,12 @@ public class KeyPairUtil {
         byte[] encodedPrivate = privateKey.getEncoded();
         byte[] encodedPublic = publicKey.getEncoded();
         //Base64转码
-        String prv = Base64.encode(encodedPrivate);
-        String pub = Base64.encode(encodedPublic);
+//        String prv = Base64.encode(encodedPrivate);
+//        String pub = Base64.encode(encodedPublic);
+        byte[] encodePrvBytes = Base64.encodeBase64(encodedPrivate);
+        String prv = HexUtil.toHex(encodePrvBytes);
+        byte[] encodePubBytes = Base64.encodeBase64(encodedPrivate);
+        String pub = HexUtil.toHex(encodePubBytes);
         String pubFile = buildFilePath(algorithm,"pub");
         String priFile = buildFilePath(algorithm,"pri");
         FileUtils.writeStringToFile(new File(pubFile), pub, Charset.forName("utf-8"));
@@ -40,7 +43,8 @@ public class KeyPairUtil {
 
     public static PublicKey getPublicKey(String algorithm, String pubKeyPath) throws Exception {
         String pub = FileUtils.readFileToString(new File(pubKeyPath), Charset.forName("utf-8"));
-        byte[] pubBytes = Base64.decode(pub);
+//        byte[] pubBytes = Base64.decode(pub);
+        byte[] pubBytes = Base64.decodeBase64(pub);
         KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
         KeySpec keySpec = new X509EncodedKeySpec(pubBytes);
         return keyFactory.generatePublic(keySpec);
@@ -48,7 +52,8 @@ public class KeyPairUtil {
 
     public static PrivateKey getPrivatelicKey(String algorithm, String privateKeyPath) throws Exception {
         String privateKey = FileUtils.readFileToString(new File(privateKeyPath), Charset.forName("utf-8"));
-        byte[] privateBytes = Base64.decode(privateKey);
+//        byte[] privateBytes = Base64.decode(privateKey);
+        byte[] privateBytes = Base64.decodeBase64(privateKey);
         KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
         KeySpec keySpec = new PKCS8EncodedKeySpec(privateBytes);
         return keyFactory.generatePrivate(keySpec);
